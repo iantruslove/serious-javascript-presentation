@@ -187,8 +187,7 @@
         <ul>
           <li><code>let</code>, <code>const</code>, and <code>function</code> definitions in block scope</li>
           <li>destructuring:
-            <pre><code contenteditable>
-let {x, y} = point;
+            <pre><code contenteditable>let {x, y} = point;
 </code><pre></li>
           <li>modules</li>
           <li>classes</li>
@@ -208,12 +207,10 @@ let {x, y} = point;
           <li>default parameter values in functions</li>
           <li><code>rest</code>, <code>spread</code> - ellipsis args in function param lists</li>
           <li>arrow function syntax (c.f. CoffeeScript):<br/>
-            <pre><code contenteditable>
-let identity = (x) => x
+            <pre><code contenteditable>let identity = (x) => x
 </code><pre></li>
               <li>Clean lambda syntax:</br>
-            <pre><code contenteditable>
-[1, 2, 3].map(x => x*x);
+            <pre><code contenteditable>[1, 2, 3].map(x => x*x);
 </code><pre></li>
           <li>Deferreds and promises</li>
           <li>Proper tail calls</li>
@@ -222,7 +219,44 @@ let identity = (x) => x
         </section>
 
         <section>
-        Browser Support
+          <h2>Browser Support</h2>
+          <img src="images/voodoo.jpg" />
+          <small>Source: http://www.37days.com/images/various/voodoo_1000x625.jpg</small>
+        </section>
+
+
+        <section>
+          <h3>Browser Support</h3>
+          <p>
+          <ul>
+          <li>ES5: <span class="fragment">~ IE9+, FFX4+, Chrome7+, Safari 5.1+</span></li>
+          <li>ES6: <span class="fragment">&lt;40% in FFX 17</span></li>
+          </ul>
+          </p>
+          <p>
+          <small class="fragment">Source: http://kangax.github.com/es5-compat-table/, http://kangax.github.com/es5-compat-table/es6/</small>
+          </p>
+        </section>
+
+        <section>
+          <h3>Browser Support</h3>
+          <ul>
+            <li class="fragment">No simple answer</li>
+            <li class="fragment">Compatibility tables</li>
+            <ul class="fragment">
+              <li>Kangax's <a href="http://kangax.github.com/es5-compat-table/">ES5</a> and <a href="http://kangax.github.com/es5-compat-table/es6/">ES6</a> tables</li>
+              <li><a href="http://www.quirksmode.org/compatibility.html">QuirksMode.org</a></li>
+            </ul>
+            <li class="fragment">Cross-platform libraries</li>
+            <ul class="fragment">
+              <li>jQuery, Prototype, etc.</li>
+            </ul>
+            <li class="fragment">Shims, polyfills, fallbacks</li>
+            <ul class="fragment">
+              <li>List of <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">HTML5 Cross Browser Polyfills</a></li>
+              <li><a href="http://modernizr.com/">Modernizr</a></li>
+            </ul>
+          </ul>
         </section>
 
         <section>
