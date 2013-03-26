@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
 
-    <title>reveal.js - The HTML Presentation Framework</title>
+    <title>Serious JavaScript Presentation</title>
 
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A presentation on why JavaScript is great, and how you can write great JavaScript">
+    <meta name="author" content="Ian Truslove">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -15,7 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="reveal.js/css/reveal.min.css">
-    <link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
+    <link rel="stylesheet" href="reveal.js/css/theme/sky.css" id="theme">
+    <!--<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">-->
     <!--<link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">-->
 
     <!-- For syntax highlighting -->
@@ -118,41 +119,106 @@
             <li class="fragment"><i>(basically any web browser)</i></li>
           </ul>
         </ul>
-
         </section>
 
         <section>
-        <h1>
+        <h3>The Unexpected Parts</h3>
+        <ul>
+          <li class="fragment">Prototypal inheritance</li>
+        </ul>
+        </section>
+
+        <section>
+        <h2>
           Standardization
-        </h1>
+        </h2>
         <img src="images/committee.jpg" height="456px" width="495px" alt="Committee meeting" />
         <small>
-         Source: http://untreaty.un.org/cod/avl/images/ha/udhr/photo%20gallery/03-large.jpg
-         </small>
+          Image source: http://untreaty.un.org/cod/avl/images/ha/udhr/photo%20gallery/03-large.jpg
+        </small>
+        <small>
+          References for this section: http://en.wikipedia.org/wiki/ECMAScript
+        </small>
         </section>
 
         <section>
         <h2>
           ECMAScript 3
         </h2>
+        <p class="fragment">Dec 1999</p>
+        <p class="fragment">The JavaScript everyone knows</p>
         </section>
 
         <section>
         <h2>
           ECMAScript 4
         </h2>
+        <p class="fragment">n/a - abandoned</p>
+        <p class="fragment">Contained classes, a module system,
+        optional type annotations and static typing (probably using a structural type system),
+        generators and iterators, destructuring assignment, and algebraic data types</p>
         </section>
 
         <section>
         <h2>
           ECMAScript 5
         </h2>
+        <p class="fragment">Dec 2009</p>
+        <p class="fragment">Incremental improvements over ES3</p>
+        <p class="fragment"> Strict mode, object getters and setters, <code>seal</code> and <code>freeze</code> methods,
+        new array methods incuding <code>indexOf</code>, <code>map</code>, <code>reduce</code>, <code>filter</code>
+        </p>
         </section>
 
         <section>
         <h2>
-          ECMAScript 6 (Harmony)
+          Harmony (ECMAScript 6?)
         </h2>
+        <p class="fragment">tbd</p>
+        <p class="fragment">Scaled-down version of ES4</p>
+        </section>
+
+
+        <section>
+        <h3>
+          Harmony (possible features)
+        </h3>
+        <ul>
+        <ul>
+          <li><code>let</code>, <code>const</code>, and <code>function</code> definitions in block scope</li>
+          <li>destructuring:
+            <pre><code contenteditable>
+let {x, y} = point;
+</code><pre></li>
+          <li>modules</li>
+          <li>classes</li>
+          <li>proxies (multiple inheritance)</li>
+          <li>binary data types</li>
+          <li>maps, sets, weak maps</li>
+          <li>iterators, generators, array comprehensions</li>
+        </ul>
+        </p>
+        </section>
+
+        <section>
+        <h3>
+          Harmony (possible features)
+        </h3>
+        <ul>
+          <li>default parameter values in functions</li>
+          <li><code>rest</code>, <code>spread</code> - ellipsis args in function param lists</li>
+          <li>arrow function syntax (c.f. CoffeeScript):<br/>
+            <pre><code contenteditable>
+let identity = (x) => x
+</code><pre></li>
+              <li>Clean lambda syntax:</br>
+            <pre><code contenteditable>
+[1, 2, 3].map(x => x*x);
+</code><pre></li>
+          <li>Deferreds and promises</li>
+          <li>Proper tail calls</li>
+        </ul>
+        </p>
         </section>
 
         <section>
