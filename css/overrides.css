@@ -1,0 +1,29 @@
+.reveal li {
+  margin-top: 0.3em;
+}
+
+.reveal ul li {
+  margin-top: 0.2em;
+}
+
+.reveal ul ul li {
+  margin-top: 0.1em;
+}
+
+.reveal ul ul {
+  list-style-type: circle;
+}
+
+.reveal ul ul li {
+  font-size: 0.9em;
+}
+
+
+.reveal ul ul ul li {
+  list-style-type: disc;
+}
+
+.reveal ul ul ul li {
+  font-size: 0.8em;
+}
+
