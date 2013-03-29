@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <title>Serious JavaScript Presentation</title>
-
+    
     <meta name="description" content="A presentation on why JavaScript is great, and how you can write great JavaScript">
     <meta name="author" content="Ian Truslove">
 
@@ -122,16 +122,264 @@
         </section>
 
         <section>
-        <h3>The Unexpected Parts</h3>
-        <ul>
-          <li class="fragment">Prototypal inheritance</li>
-        </ul>
+          <h3>The Unexpected Parts</h3>
+          <ul>
+            <li class="fragment">Prototypal inheritance</li>
+            <ul>
+              <li class="fragment">Generalization from specialized instances</li>
+            </ul>
+          </ul>
         </section>
 
         <section>
-        <h2>
-          Standardization
-        </h2>
+          <h3>Example</h3>
+          <pre><code contenteditable>
+ // Write some 2d array operations
+ // to process things like this:
+ var testData = [
+       [0.1, 0.2, 0.2, 0.2, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.3, 0.4, 0.3, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.2, 0.2, 0.2, 0.1] ];
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Programming by intent</h4>
+          <pre><code contenteditable>
+var testData = [
+       [0.1, 0.2, 0.2, 0.2, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.3, 0.4, 0.3, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.2, 0.2, 0.2, 0.1] ];
+
+// What's the max value in the array?
+ops2d.max(testData);
+
+> 0.4
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Encapsulation with object literals</h4>
+          <pre><code contenteditable>
+var ops2d = {
+  max: function (data) {
+    var max = ...  // calculate max
+    return max;
+  }
+}
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Array methods</h4>
+          <pre><code contenteditable>
+var ops2d = {
+  max: function (data) {
+    var maxOfEachRow = data.map(maxInRow)
+    return maxInRow(maxOfEachRow); 
+  }
+}
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Extract and encapsulate</h4>
+          <pre><code contenteditable>
+var ops1d = {
+  max: function (row) {
+    return row.reduce(
+      function (acc, current) {
+        return Math.max(acc, current);
+    });
+  }
+};
+
+var ops2d = {
+  max: function (data) {
+    // Local var was flattened
+    return ops1d.max(data.map(ops1d.max));
+  }
+};
+          </code></pre>
+        </section>
+
+
+
+        <section>
+          <h4>Done</h4>
+          <pre><code contenteditable>
+// Try it...
+var testData = [ [0.1, 0.2, 0.2, 0.2, 0.1], /* etc... */ ];
+
+var ops1d = { /* ... */ };
+
+var ops2d = { /* ... */ };
+
+ops1d.max([1,2,3,2,1]);
+
+> 3
+
+ops2d.max(testData);
+
+> 0.4
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Another example</h4>
+          <pre><code contenteditable>
+// How about scaling the whole data array?
+ops2d.scale(testData, 2);
+
+> [ [0.2, 0.4, 0.4, 0.4, 0.2], [ /* etc ... */ ] ]
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>First level of implementation</h4>
+          <pre><code contenteditable>
+var ops2d = {
+  scale: function (data, scale) {
+    return data.map(
+      function (row) {
+        return row.map(
+          function (datum) {
+            return datum * scale;
+          });
+    });
+  }
+};
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Extract and clean up</h4>
+          <pre><code contenteditable>
+var ops1d = {
+  scale: function (row, scale) {
+    return row.map(
+      function (datum) { return datum*scale; }
+    );
+  }
+};
+
+var ops2d = {
+  scale: function (data, scale) {
+    return data.map(
+      function (row) { return ops1d.scale(row, scale); }
+    );
+  }
+};
+
+ops2d.scale(testData, 2);
+
+> [ [0.2, 0.4, 0.4, 0.4, 0.2], /* ... */ ]
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Generalize</h4>
+          <pre><code contenteditable>
+// Note assignment to the object by key:
+ops2d.map = function (data, fn) {
+  return data.map(
+    function (row) { return row.map(fn); }
+  );
+};
+
+ops2d.map(testData, function (datum) { return datum*2 });
+
+> [ [0.2, 0.4, 0.4, 0.4, 0.2], /* ... */ ]
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Generalize further</h4>
+          <pre><code contenteditable>
+ops2d.map = function (data, fn) {
+  return data.map(
+    function (row) { return row.map(fn); }
+  );
+};
+
+var scaler = function(scale, datum) {
+  return scale*datum;
+};
+
+// Wouldn't it be nice if...
+ops2d.map(testData, scaler.curry(2));
+          </code></pre>
+        </section>
+
+
+        <section>
+          <h4>Adding a curry function to Functions</h4>
+          <pre><code contenteditable>
+// `prototype` is the mechanism for inheritance
+Function.prototype.curry = function (arg) {
+  var fn = this;
+
+  return (function(x) {
+    return fn(arg, x);
+  });
+};
+
+(scaler.curry(2))(3);
+
+> 6
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Composability!</h4>
+          <pre><code contenteditable>
+ops2d.map = function (data, fn) { /* ... */ }
+
+// A new transformation:
+var threshold = function(min, datum) {
+  return Math.max(min, datum);
+};
+
+ops2d.map(testData, threshold.curry(0.2));
+
+> [ [0.2, 0.2, 0.2, 0.2, 0.2],
+    [0.2, 0.2, 0.3, 0.2, 0.2],
+    [0.2, 0.3, 0.4, 0.3, 0.2], /* etc ... */
+          </code></pre>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section>
+          <h2>
+            Standardization
+          </h2>
         <img src="images/committee.jpg" height="456px" width="495px" alt="Committee meeting" />
         <small>
           Image source: http://untreaty.un.org/cod/avl/images/ha/udhr/photo%20gallery/03-large.jpg
@@ -158,7 +406,6 @@
         optional type annotations and static typing (probably using a structural type system),
         generators and iterators, destructuring assignment, and algebraic data types</p>
         </section>
-
         <section>
         <h3>
           ECMAScript 5
@@ -187,7 +434,7 @@
           <li><code>let</code>, <code>const</code>, and <code>function</code> definitions in block scope</li>
           <li>destructuring:
             <pre><code contenteditable>let {x, y} = point;
-</code><pre></li>
+</code></pre></li>
           <li>modules</li>
           <li>classes</li>
           <li>proxies (multiple inheritance)</li>
@@ -207,10 +454,10 @@
           <li><code>rest</code>, <code>spread</code> - ellipsis args in function param lists</li>
           <li>arrow function syntax (c.f. CoffeeScript):<br/>
             <pre><code contenteditable>let identity = (x) => x
-</code><pre></li>
+</code></pre></li>
               <li>Clean lambda syntax:</br>
             <pre><code contenteditable>[1, 2, 3].map(x => x*x);
-</code><pre></li>
+</code></pre></li>
           <li>Deferreds and promises</li>
           <li>Proper tail calls</li>
         </ul>
@@ -308,11 +555,22 @@
         </section>
 
         <section>
-        <h2>Tools</h2>
+          <h2>Tools</h2>
+          <ul>
+            <li>Lint</li>
+            <li>CoffeeScript</li>
+            <li>Grunt</li>
+            <li>Yeoman</li>
+          </ul>
         </section>
-
+        
         <section>
-        <h2>Libraries</h2>
+          <h2>Libraries</h2>
+          <ul>
+            <li>Too many to mention</li>
+            <li>npm for package management - even client side?</li>
+            <li>Underscore, Lobar</li>
+          </ul>
         </section>
 
         <section>
