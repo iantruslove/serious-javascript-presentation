@@ -59,16 +59,15 @@
         <ul>
           <li class="fragment">Audience</li>
           <li class="fragment">Goals</li>
-          <li class="fragment">History</li>
         </ul>
         </section>
 
 
         <section>
         <h2>Outline</h2>
-        <ol class="fragment">
+        <ol>
           <li>Language Overview</li>
-          <li>In-browser JS</li>
+          <li>Client-side JS</li>
           <li>Server-side JS</li>
           <li>Software Engineering</li>
         </ol>
@@ -94,13 +93,14 @@
           <param name="allowscriptaccess" value="always"></param>
           <embed src="http://www.youtube.com/v/kXEgk1Hdze0&start=80" type="application/x-shockwave-flash" width="560" height="315" allowscriptaccess="always" allowfullscreen="true"></embed>
         </object>
+        <small>Link: <a href="http://www.youtube.com/v/kXEgk1Hdze0&start=80">http://www.youtube.com/v/kXEgk1Hdze0</a></small>
         </section>
 
         <section>
         <h3>The Beautiful Parts</h3>
         <ul>
           <li class="fragment">First class functions</li>
-          <li class="fragment">Closures, lexical scope</li>
+          <li class="fragment">Lexical scope and function closures</li>
           <li class="fragment">Lambdas</li>
           <li class="fragment">Functional arrays and objects</li>
           <li class="fragment">(proper tail calls?)</li>
@@ -124,6 +124,7 @@
         <section>
           <h3>The Unexpected Parts</h3>
           <ul>
+            <li class="fragment">Scheme-like language with Java-like syntax</li> 
             <li class="fragment">Prototypal inheritance</li>
             <ul>
               <li class="fragment">Using specialized instances as the
@@ -160,7 +161,7 @@
         </section>
 
         <section>
-          <h4>Programming by intent</h4>
+          <h4>Program by intent:</h4>
           <pre><code contenteditable>
 var testData = [
        [0.1, 0.2, 0.2, 0.2, 0.1],
@@ -195,7 +196,8 @@ var ops2d = {
           <pre><code contenteditable>
 var ops2d = {
   max: function (data) {
-    var maxOfEachRow = data.map(maxInRow)
+    // using ES5 Array.map 
+    var maxOfEachRow = data.map(maxInRow);
     return maxInRow(maxOfEachRow); 
   }
 }
@@ -207,7 +209,8 @@ var ops2d = {
           <h4>Extract and encapsulate</h4>
           <pre><code contenteditable>
 var ops1d = {
-  max: function (row) {
+  max: function (row) { // i.e. maxInRow
+    // Using ES5 Array.reduce
     return row.reduce(
       function (acc, current) {
         return Math.max(acc, current);
@@ -230,15 +233,16 @@ var ops2d = {
           <h4>Done</h4>
           <pre><code contenteditable>
 // Try it...
-var testData = [ [0.1, 0.2, 0.2, 0.2, 0.1], /* etc... */ ];
+var testData = [
+       [0.1, 0.2, 0.2, 0.2, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.3, 0.4, 0.3, 0.1],
+       [0.1, 0.2, 0.3, 0.2, 0.1],
+       [0.1, 0.2, 0.2, 0.2, 0.1] ];
 
-var ops1d = { /* ... */ };
+ops1d.max(testData[0]);
 
-var ops2d = { /* ... */ };
-
-ops1d.max([1,2,3,2,1]);
-
-> 3
+> 0.2
 
 ops2d.max(testData);
 
@@ -253,7 +257,7 @@ ops2d.max(testData);
 // How about scaling the whole data array?
 ops2d.scale(testData, 2);
 
-> [ [0.2, 0.4, 0.4, 0.4, 0.2], [ /* etc ... */ ] ]
+> [ [0.2, 0.4, 0.4, 0.4, 0.2], /* etc ... */ ]
           </code></pre>
         </section>
 
@@ -269,7 +273,7 @@ var ops2d = {
           function (datum) {
             return datum * scale;
           });
-    });
+      });
   }
 };
           </code></pre>
@@ -342,11 +346,11 @@ ops2d.map(testData, scaler.curry(2));
           <h4>Adding a curry function to Functions</h4>
           <pre><code contenteditable>
 // `prototype` is the mechanism for inheritance
-Function.prototype.curry = function (arg) {
+Function.prototype.curry = function (firstArg) {
   var fn = this;
 
   return (function(x) {
-    return fn(arg, x);
+    return fn(firstArg, x);
   });
 };
 
@@ -359,8 +363,6 @@ Function.prototype.curry = function (arg) {
         <section>
           <h4>Composability!</h4>
           <pre><code contenteditable>
-ops2d.map = function (data, fn) { /* ... */ }
-
 // A new transformation:
 var threshold = function(min, datum) {
   return Math.max(min, datum);
@@ -410,7 +412,7 @@ ops2d.map(testData, threshold.curry(0.2));
         </h3>
         <p class="fragment">Dec 2009</p>
         <p class="fragment">Incremental improvements over ES3</p>
-        <p class="fragment"> Strict mode, object getters and setters, <code>seal</code> and <code>freeze</code> methods,
+        <p class="fragment">Strict mode, object getters and setters, <code>seal</code> and <code>freeze</code> methods,
         new array methods incuding <code>indexOf</code>, <code>map</code>, <code>reduce</code>, <code>filter</code>
         </p>
         </section>
@@ -438,7 +440,8 @@ ops2d.map(testData, threshold.curry(0.2));
           <li>proxies (multiple inheritance)</li>
           <li>binary data types</li>
           <li>maps, sets, weak maps</li>
-          <li>iterators, generators, array comprehensions</li>
+          <li>default parameter values in functions</li>
+          <li><code>rest</code>, <code>spread</code> - ellipsis args in function param lists</li>
         </ul>
         </p>
         </section>
@@ -448,8 +451,7 @@ ops2d.map(testData, threshold.curry(0.2));
           Harmony (possible features)
         </h3>
         <ul>
-          <li>default parameter values in functions</li>
-          <li><code>rest</code>, <code>spread</code> - ellipsis args in function param lists</li>
+          <li>iterators, generators, array comprehensions</li>
           <li>arrow function syntax (c.f. CoffeeScript):<br/>
             <pre><code contenteditable>let identity = (x) => x
 </code></pre></li>
@@ -472,9 +474,9 @@ ops2d.map(testData, threshold.curry(0.2));
         <h3>Challenges for Front End Development</h3>
         <ul>
           <li class="fragment">Browser inconsistency</li>
-          <ul>
-            <li class="fragment">High variability of platform capabilities</li>
-            <li class="fragment">High variability between feature
+          <ul class="fragment">
+            <li>High variability of platform capabilities</li>
+            <li>High variability between feature
             implementation on browsers (IE is particularly bad)</li>
           </ul>
           <li class="fragment">Code management</li>
@@ -485,9 +487,9 @@ ops2d.map(testData, threshold.curry(0.2));
             <li class="fragment">Poor organization</li>
           </ul>
           <li class="fragment">Performance</li>
-          <ul>
-            <li class="fragment">Poor implementations</li>
-            <li class="fragment">80/20</li>
+          <ul class="fragment">
+            <li>Poor implementations</li>
+            <li>80/20</li>
         </ul>
         </section>
 
@@ -508,7 +510,7 @@ ops2d.map(testData, threshold.curry(0.2));
           </ul>
           </p>
           <p>
-          <small class="fragment">Source: http://kangax.github.com/es5-compat-table/, http://kangax.github.com/es5-compat-table/es6/</small>
+          <small>Source: http://kangax.github.com/es5-compat-table/, http://kangax.github.com/es5-compat-table/es6/</small>
           </p>
         </section>
 
@@ -568,11 +570,19 @@ ops2d.map(testData, threshold.curry(0.2));
 
         <section>
           <h3>Implementations &amp; Characteristics</h3>
-          <p><span class="fragment"><a href="http://nodejs.org/">Node.js</a></span><span class="fragment"> - native C++ implementation, based on Google V8 engine. Includes <code>npm</code> package manager.</span></p>
-          <p><span class="fragment"><a href="https://developer.mozilla.org/en-US/docs/Rhino">Rhino</a></span><span class="fragment"> - Java implementation of a JS engine, from Mozilla. Used interactively, or embedded to add JS scripting into Java apps.</span></p>
-          <p><span class="fragment"><a href="http://www.envjs.com/">Envjs</a></span><span class="fragment"> - JS implementation of a browser's JS functionality.  Different back ends, but primarily for Rhino.  Primarily used for headless testing.</span></p>
-          <p><span class="fragment"><a href="http://phantomjs.org/">PhantomJS</a></span><span class="fragment"> - headless webkit browser with JS API and REPL. Frequently used for testing, also as a scriptable browser.</span></p>
-          <p><span class="fragment"><a href="https://trac.webkit.org/wiki/JSC">JSC</a></span><span class="fragment"> - JS parts of WebKit, exposed as REPL or interpreter script.</span></p>
+          <p class="fragment"><a href="http://nodejs.org/">Node.js</a> - native C++ implementation, based on Google V8 engine. Includes <code>npm</code> package manager.</p>
+          <p class="fragment"><a href="https://developer.mozilla.org/en-US/docs/Rhino">Rhino</a>
+          - Java implementation of a JS engine, from Mozilla. Used
+          interactively, or embedded to add JS scripting into Java
+            apps.</p>
+          <p class="fragment"><a href="http://www.envjs.com/">Envjs</a>
+          - JS implementation of a browser's JS functionality.
+          Uses Rhino, support exists for other back ends. Primarily
+            used for headless testing.</p>
+          <p class="fragment"><a href="http://phantomjs.org/">PhantomJS</a>
+          - native headless webkit browser with JS API and REPL. Used for testing, scriptable browser.</p>
+          <p class="fragment"><a href="https://trac.webkit.org/wiki/JSC">JSC</a>
+            - JS parts of WebKit.  REPL or command line runtime</p>
         </section>
 
         <section>
@@ -609,10 +619,10 @@ console.log('Server running at http://127.0.0.1:8080/');
             <h3>Node Package Manager</h3>
             <ul>
               <li class="fragment">&gt; 26,000 packages</li>
-              <ul>
-                <li class="fragment">Web frameworks and tools</li>
-                <li class="fragment">Database connectivity</li>
-                <li class="fragment">Functional libraries</li>
+              <ul class="fragment">
+                <li>Web frameworks and tools</li>
+                <li>Database connectivity</li>
+                <li>Functional libraries</li>
               </ul>
               <li class="fragment">Highly active community</li>
               <li class="fragment">Good command-line tool</li>
@@ -626,9 +636,12 @@ console.log('Server running at http://127.0.0.1:8080/');
         <section>
           <h3>Modules</h3>
           <ul>
+            <li class="fragment">Code patterns</li>
+            <li class="fragment">Script loaders</li>
+            <li class="fragment"><a href="http://www.commonjs.org/">CommonJS</a>,
+              <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a>,
+              <a href="https://github.com/umdjs/umd">UMD</a></li>
             <li class="fragment">ES6</li>
-            <li class="fragment">CommonJS, AMD, UMD</li>
-            <li class="fragment">Script Loaders</li>
           </ul>
         </section>
 
@@ -649,10 +662,9 @@ console.log('Server running at http://127.0.0.1:8080/');
 
         <!-- TODO: links -->
         <section>
-          <h3>Libraries</h3>
+          <h3>(a few) Libraries</h3>
           <ul>
-            <li class="fragment">Too many to mention all...</li>
-            <li class="fragment">Front-end "MVC" libraries</li>
+            <li class="fragment">Front-end "MVC" libraries:</li>
             <ul>
               <li class="fragment"><a href="http://angularjs.org/">Angular</a>,
                 <a href="http://knockoutjs.com/">Knockout</a>,
